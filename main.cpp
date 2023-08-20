@@ -1,38 +1,38 @@
-#include <list>
 #include "raylib.h"
-#include "src/SpriteGroup.cpp"
+// #include "include/Sprite.h"
+#include "include/SpriteGroup.h"
+#include "include/Roach.h"
 
-int main(void)
-{
+int main(void) {
 	// Initialization
 	//--------------------------------------------------------------------------------------
 	const int screenWidth = 800;
 	const int screenHeight = 600;
 
-	InitWindow(screenWidth, screenHeight, "raylib [textures] example - image drawing");
+	InitWindow(screenWidth, screenHeight, "Roach Smasher");
 	SetTargetFPS(60);
 
 	SpriteGroup *spriteGroup = new SpriteGroup();
+	// Roach *sprite = new Roach(0, 0);//, 0.5, "./src/assets/img/roach.png");
 	//---------------------------------------------------------------------------------------
 
+	// Texture2D texture = LoadTexture("./src/assets/img/roach.png");
+
 	// Main game loop
-	while (!WindowShouldClose())    // Detect window close button or ESC key
-	{
+	while (!WindowShouldClose()) { // Detect window close button or ESC key
 		// Update
 		//----------------------------------------------------------------------------------
-		// TODO: Update your variables here
-		//----------------------------------------------------------------------------------
+		if (IsKeyDown(KEY_RIGHT)) {
+			spriteGroup->add(
+				new Roach(0, 0)
+			);
+		}
+		spriteGroup->update();
 
 		// Draw
 		//----------------------------------------------------------------------------------
 		BeginDrawing();
-			if (IsKeyDown(KEY_RIGHT)) {
-				spriteGroup->add(
-					new Sprite(0, 0, 1.0, "./src/assets/img/roach.png")
-				);
-				std::cout << spriteGroup->size() << std::endl;
-			}
-
+			// DrawTextureEx(texture, Vector2{0, 0}, 0.0, 0.5, RAYWHITE);
 			spriteGroup->draw();
 
 			ClearBackground(RAYWHITE);
