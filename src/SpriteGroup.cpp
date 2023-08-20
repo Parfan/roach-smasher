@@ -1,33 +1,32 @@
-#include <raylib.h>
-#include <vector>
-#include "Sprite.cpp"
-#include <iostream>
+#include "../include/SpriteGroup.h"
+#include "../include/Sprite.h"
 
-class SpriteGroup {
-	public:
-		void add(Sprite *sprite) {
-			_spriteGroup.push_back(sprite);
-		}
+void SpriteGroup::add(Sprite* sprite) {
+	_sprites.push_back(sprite);
+	sprite->addToGroup(this);
+	_size++;
+}
 
-		void remove(Sprite *sprite) {
-			for (int i = 0; i < _spriteGroup.size(); i++) {
-				if (_spriteGroup.at(i) == sprite) {
-					_spriteGroup.erase(_spriteGroup.begin() + i);
-					break;
-				}
-			}
-		}
+void SpriteGroup::remove(Sprite* sprite) {
+	auto it = std::find(_sprites.begin(), _sprites.end(), sprite);
+	if (it != _sprites.end()) {
+		_sprites.erase(it);
+		_size--;
+	}
+}
 
-		void draw() {
-			for (int i = 0; i < _spriteGroup.size(); i++) {
-				_spriteGroup.at(i)->draw();
-			}
-		}
+int SpriteGroup::size() {
+	return _size;
+}
 
-		int size() {
-			return _spriteGroup.size();
-		}
+void SpriteGroup::update() {
+	for (Sprite* sprite : _sprites) {
+		sprite->update();
+	}
+}
 
-	private:
-		std::vector<Sprite*> _spriteGroup;
-};
+void SpriteGroup::draw() {
+	for (Sprite* sprite : _sprites) {
+		sprite->draw();
+	}
+}

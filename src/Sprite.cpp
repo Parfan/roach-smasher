@@ -1,22 +1,43 @@
-#include <raylib.h>
+#include "raylib.h"
+#include "../include/Sprite.h"
+// #include "../include/SpriteGroup.h"
 
-class Sprite {
-	public:
-		Sprite(int posX, int posY, float scale, const char *texturePath) {
-			_texturePath = texturePath;
-			_texture = LoadTexture(_texturePath);
-			_pos.x = posX;
-			_pos.y = posY;
-			_scale = scale;
-		}
+class SpriteGroup;
 
-		void draw() {
-			DrawTextureEx(_texture, Vector2{_pos.x, _pos.y}, 0, _scale, RAYWHITE);
-		}
+Sprite::Sprite(int posX, int posY, float scale, const char* texturePath) {
+	_pos.x = posX;
+	_pos.y = posY;
+	_scale = scale;
+	// _texture = LoadTexture("./src/assets/img/roach.png");
+}
 
-	private:
-		Vector2 _pos;
-		float _scale;
-		const char* _texturePath;
-		Texture2D _texture;
-};
+/**
+ * Method to update the instance attributes.
+ */
+void Sprite::update() const {};
+/**
+ * Method to draw the Sprite in the screen.
+ */
+void Sprite::draw() const {};
+// void Sprite::draw() {
+// 	DrawTextureEx(_texture, _pos, 0.0, 0.5, RAYWHITE);
+// }
+
+// /**
+//  * Remove the instance from all SpriteGroups and destroy it.
+//  */
+void Sprite::kill() {
+	removeFromGroups();
+	delete this;
+}
+
+void Sprite::addToGroup(SpriteGroup* group) {
+	_groups.push_back(group);
+}
+
+void Sprite::removeFromGroups() {
+	for (SpriteGroup* group : _groups) {
+		group->remove(this);
+	}
+	_groups.clear();
+}
